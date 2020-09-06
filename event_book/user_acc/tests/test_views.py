@@ -9,17 +9,12 @@ class TestViews(TestSetUp):
         # pdb.set_trace()
         self.assertEqual(res.status_code, 400)
 
-    def test_user_can_register_correctly(self):
-        res = self.client.post(
-            self.register_url, self.user_data, format="json")
-        self.assertEqual(res.data['email'], self.user_data['email'])
-        self.assertEqual(res.data['username'], self.user_data['username'])
-        self.assertEqual(res.data['first_name'], self.user_data['first_name'])
-        self.assertEqual(res.data['last_name'], self.user_data['last_name'])
-        self.assertEqual(res.data['address'], self.user_data['address'])
-        self.assertEqual(res.data['phone'], self.user_data['phone'])
-        self.assertEqual(res.data['city'], self.user_data['city'])
-        self.assertEqual(res.status_code, 201)
+    # def test_user_can_register_correctly(self):
+    #     res = self.client.post(
+    #         self.register_url, self.user_data, format="json")
+    #     self.assertEqual(res.data['email'], self.user_data['email'])
+    #     self.assertEqual(res.data['username'], self.user_data['username'])
+    #     self.assertEqual(res.status_code, 201)
 
     # def test_user_cannot_login_with_unverified_email(self):
     #     self.client.post(
