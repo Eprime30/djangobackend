@@ -1,7 +1,7 @@
+# Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from user_acc.models import Account
-# Register your models here.
+from .models import Account
 
 
 class AccountAdmin(UserAdmin):

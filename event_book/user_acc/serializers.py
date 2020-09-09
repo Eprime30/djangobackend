@@ -4,10 +4,6 @@ from .models import Account
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 
-# from django.contrib.auth.tokens import PasswordResetTokenGenerator
-# from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
-# from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-
 
 class RegisterSerializer(serializers.ModelSerializer):
 
@@ -56,16 +52,10 @@ class LoginSerializer(serializers.ModelSerializer):
         password = attrs.get('password', '')
 
         user = auth.authenticate(email=email, password=password)
-        # import pdb
-        # pdb.set_trace()
-
         if not user:
             raise AuthenticationFailed('Invalid credentials, try again')
         if not user.is_active:
             raise AuthenticationFailed('Account disabled, contact admin')
-
-        # if not user.is_verified:
-        #     raise AuthenticationFailed('Email is not verified')
 
         return {
             'email': user.email,

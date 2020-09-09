@@ -1,12 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from rest_framework_simplejwt.tokens import RefreshToken
-# from phonenumber_field.modelfields import PhoneNumberField
-# import phonenumbers
+
 
 # Create your models here.
-
-
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
@@ -42,9 +39,9 @@ class CustomUserManager(BaseUserManager):
 
         # user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        # user.save(using=self._db)
-        user.save()
-        # return user
+        user.save(using=self._db)
+        # user.save()
+        return user
 
     def create_superuser(self, first_name, last_name, email, password, username, phone, address, **extra_fields):
         user = self.create_user(
@@ -55,7 +52,6 @@ class CustomUserManager(BaseUserManager):
             username=username,
             phone=phone,
             address=address,
-
         )
 
         """
@@ -67,15 +63,6 @@ class CustomUserManager(BaseUserManager):
         # user.save(using=self._db)
         user.save()
         return user
-        # extra_fields.setdefault('is_staff', True)
-        # extra_fields.setdefault('is_superuser', True)
-        # extra_fields.setdefault('is_active', True)
-
-        # if extra_fields.get('is_staff') is not True:
-        #     raise ValueError(_('Superuser must have is_staff=True.'))
-        # if extra_fields.get('is_superuser') is not True:
-        #     raise ValueError(_('Superuser must have is_superuser=True.'))
-        # return self.create_user(email, password, **extra_fields)
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
@@ -95,25 +82,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
         verbose_name='phone', max_length=10, blank=True)
     address = models.TextField(
         verbose_name='address', max_length=200, blank=True)
-
-    # password field supplied by AbstractBaseUser
-    # last_login field supplied by AbstractBaseUser
-    # cities = (
-    #     ('Accra', 'Accra'),
-    #     ('Kumasi', 'Kumasi'),
-    #     ('Tamale', 'Tamale'),
-    #     ('Takoradi', 'Takoradi'),
-    #     ('Sunyani', 'Sunyani'),
-    #     ('Cape_Coast', 'Cape Coast'),
-    #     ('Obuasi', 'Obuasi'),
-    #     ('Teshie', 'Teshie'),
-    #     ('Koforidua', 'Koforidua'),
-    #     ('Wa', 'Wa'),
-    #     ('Bolgatanga', 'Bolgatanga'),
-    # )
-
-    # city = models.CharField(verbose_name='city', max_length=50,
-    #                         choices=cities, default='')
 
     # Designates whether this user should be treated as active.
     # Unselect this instead of deleting accounts.
