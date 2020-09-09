@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5998568f088234fe8819be58e7bb4147e22584a08b32d94db9a0663f9059dad6"
+            "sha256": "f4cc7f39da4c2df6511a488fdd45f3a1a6e41d270d0f83793dadaf6b78a73584"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -67,6 +67,14 @@
             ],
             "index": "pypi",
             "version": "==3.5.0"
+        },
+        "django-phonenumber-field": {
+            "hashes": [
+                "sha256:1eb7af3a108744665f7c3939d38aa15b3728c57d13d45d656b0a2aa11e8cdc3c",
+                "sha256:adb46905cc4ecb19d8494424e1c4352f24946bb472340a2a17257d44bf8228e6"
+            ],
+            "index": "pypi",
+            "version": "==5.0.0"
         },
         "djangorestframework": {
             "hashes": [
@@ -177,6 +185,14 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==20.4"
+        },
+        "phonenumbers": {
+            "hashes": [
+                "sha256:b8644c1dccd45d4c0f54c5b10effcc8c3f733e6a3c2caf40c9175fabc5010ffe",
+                "sha256:f887eceb3d9db17ec479a85245bd0ebe74c5f43489217784215ffb231f8c9e88"
+            ],
+            "index": "pypi",
+            "version": "==8.12.9"
         },
         "pyjwt": {
             "hashes": [

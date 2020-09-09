@@ -19,8 +19,8 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = Account
-        fields = ('email', 'username', 'first_name', 'last_name',
-                  'address', 'phone', 'city' 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'email', 'password1',
+                  'password2', 'username', 'phone', 'address')
 
     def clean_password2(self):
         # Check that the two password entries match

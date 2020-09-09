@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'user_acc',
     'rest_framework',
     'corsheaders',
+    'phonenumber_field',
     'drf_yasg'
 
 ]

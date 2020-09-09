@@ -16,8 +16,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ['email', 'username', 'first_name',
-                  'last_name', 'address', 'phone', 'city', 'password', 'confirm_password']
+        fields = ['first_name', 'last_name', 'email', 'password',
+                  'confirm_password', 'username',  'phone', 'address']
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, attrs):
@@ -56,17 +56,21 @@ class LoginSerializer(serializers.ModelSerializer):
         password = attrs.get('password', '')
 
         user = auth.authenticate(email=email, password=password)
+        # import pdb
+        # pdb.set_trace()
+
         if not user:
             raise AuthenticationFailed('Invalid credentials, try again')
         if not user.is_active:
             raise AuthenticationFailed('Account disabled, contact admin')
+
         # if not user.is_verified:
         #     raise AuthenticationFailed('Email is not verified')
 
         return {
             'email': user.email,
             'username': user.username,
-            'tokens': user.tokens
+            'tokens': user.tokens()
         }
 
         return super().validate(attrs)

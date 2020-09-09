@@ -5,18 +5,6 @@
 # # Create your views here.
 
 
-# def registration_view(request):
-#     context = {}
-#     if request.POST:
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             email = form.clean_data.get('email')
-#             raw_password = form.clean_data.get('password1')
-#             login(request, account)
-#             return
-
-
 from django.shortcuts import render
 from rest_framework import generics, status  # views
 # SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer

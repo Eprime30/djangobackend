@@ -12,6 +12,8 @@ django-cors-headers = "*"
 drf-yasg = "*"
 djangorestframework-simplejwt = "*"
 faker = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
 
 [requires]
 python_version = "3.8"

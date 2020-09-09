@@ -1,6 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from rest_framework_simplejwt.tokens import RefreshToken
+# from phonenumber_field.modelfields import PhoneNumberField
+# import phonenumbers
 
 # Create your models here.
 
@@ -11,50 +13,49 @@ class CustomUserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
-    def create_user(self, email, username, first_name, last_name, address, phone, city, password, **extra_fields):
+    def create_user(self, first_name, last_name, email, password, username, phone, address, **extra_fields):
         """
         Create and save a User with the given email and password.
         """
-        if not email:
-            raise ValueError(_('The Email must be set'))
-        if not username:
-            raise ValueError(_('The Username must be set'))
         if not first_name:
             raise ValueError(_('The First name must be set'))
         if not last_name:
             raise ValueError(_('The Last name must be set'))
-        if not address:
-            raise ValueError(_('The Address must be set'))
+        if not email:
+            raise ValueError(_('The Email must be set'))
+        if not username:
+            raise ValueError(_('The Username must be set'))
         if not phone:
             raise ValueError(_('The Phone must be set'))
-        if not city:
-            raise ValueError(_('The City must be set'))
+        if not address:
+            raise ValueError(_('The Address must be set'))
 
         user = self.model(
-            email=self.normalize_email(email),
-            username=username,
             first_name=first_name,
             last_name=last_name,
-            address=address,
+            email=self.normalize_email(email),
+            password=password,
+            username=username,
             phone=phone,
-            city=city,
+            address=address,
         )
 
         # user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
-        return user
+        # user.save(using=self._db)
+        user.save()
+        # return user
 
-    def create_superuser(self, email, username, first_name, last_name, address, phone, city, password, **extra_fields):
+    def create_superuser(self, first_name, last_name, email, password, username, phone, address, **extra_fields):
         user = self.create_user(
+            first_name=first_name,
+            last_name=last_name,
             email=self.normalize_email(email),
             password=password,
             username=username,
-            first_name=first_name,
-            last_name=last_name,
-            address=address,
             phone=phone,
-            city=city,
+            address=address,
+
         )
 
         """
@@ -63,7 +64,8 @@ class CustomUserManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
-        user.save(using=self._db)
+        # user.save(using=self._db)
+        user.save()
         return user
         # extra_fields.setdefault('is_staff', True)
         # extra_fields.setdefault('is_superuser', True)
@@ -76,39 +78,42 @@ class CustomUserManager(BaseUserManager):
         # return self.create_user(email, password, **extra_fields)
 
 
-class Account(AbstractBaseUser):
+class Account(AbstractBaseUser, PermissionsMixin):
 
+    first_name = models.CharField(
+        verbose_name='first name', max_length=30, blank=True)
+    last_name = models.CharField(
+        verbose_name='last name', max_length=150, blank=True)
     email = models.EmailField(
         verbose_name='email address', max_length=255, unique=True
     )
     username = models.CharField(
         verbose_name='username', max_length=255, unique=True)
-    first_name = models.CharField(
-        verbose_name='first name', max_length=30, blank=True)
-    last_name = models.CharField(
-        verbose_name='last name', max_length=150, blank=True)
+
+    # phone = PhoneNumberField(null=False, blank=False, unique=True)
+    phone = models.CharField(
+        verbose_name='phone', max_length=10, blank=True)
     address = models.TextField(
-        verbose_name='address', max_length=500, blank=True)
-    phone = models.TextField(verbose_name='phone', max_length=50, blank=True)
+        verbose_name='address', max_length=200, blank=True)
 
     # password field supplied by AbstractBaseUser
     # last_login field supplied by AbstractBaseUser
-    cities = (
-        ('Accra', 'Accra'),
-        ('Kumasi', 'Kumasi'),
-        ('Tamale', 'Tamale'),
-        ('Takoradi', 'Takoradi'),
-        ('Sunyani', 'Sunyani'),
-        ('Cape_Coast', 'Cape Coast'),
-        ('Obuasi', 'Obuasi'),
-        ('Teshie', 'Teshie'),
-        ('Koforidua', 'Koforidua'),
-        ('Wa', 'Wa'),
-        ('Bolgatanga', 'Bolgatanga'),
-    )
+    # cities = (
+    #     ('Accra', 'Accra'),
+    #     ('Kumasi', 'Kumasi'),
+    #     ('Tamale', 'Tamale'),
+    #     ('Takoradi', 'Takoradi'),
+    #     ('Sunyani', 'Sunyani'),
+    #     ('Cape_Coast', 'Cape Coast'),
+    #     ('Obuasi', 'Obuasi'),
+    #     ('Teshie', 'Teshie'),
+    #     ('Koforidua', 'Koforidua'),
+    #     ('Wa', 'Wa'),
+    #     ('Bolgatanga', 'Bolgatanga'),
+    # )
 
-    city = models.CharField(verbose_name='city', max_length=50,
-                            choices=cities, default='')
+    # city = models.CharField(verbose_name='city', max_length=50,
+    #                         choices=cities, default='')
 
     # Designates whether this user should be treated as active.
     # Unselect this instead of deleting accounts.
@@ -127,8 +132,8 @@ class Account(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name',
-                       'last_name', 'address', 'phone', 'city']
+    REQUIRED_FIELDS = ['first_name', 'last_name',
+                       'username', 'phone', 'address']
 
     objects = CustomUserManager()
 
