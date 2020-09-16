@@ -15,30 +15,38 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
+# from rest_framework import permissions
+# from drf_yasg.views import get_schema_view
+# from drf_yasg import openapi
+from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
+from event_book.view import dashboard  # , login_page, logut_page
+from . import settings
 
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="EVENT BOOKING API",
-        default_version='v1',
-        description="Test description",
-        terms_of_service="https://www.ourapp.com/policies/terms/",
-        contact=openapi.Contact(email="contact@events.local"),
-        license=openapi.License(name="Test License"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
+# schema_view = get_schema_view(
+#     openapi.Info(
+#         title="EVENT BOOKING API",
+#         default_version='v1',
+#         description="Test description",
+#         terms_of_service="https://www.ourapp.com/policies/terms/",
+#         contact=openapi.Contact(email="contact@events.local"),
+#         license=openapi.License(name="Test License"),
+#     ),
+#     public=True,
+#     permission_classes=(permissions.AllowAny,),
+# )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user_acc.urls')),
     path('event/', include('event.urls')),
-    path('', schema_view.with_ui('swagger',
-                                 cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc',
-                                       cache_timeout=0), name='schema-redoc')
+    path('dash/', dashboard, name='dashboard'),
+    # path('login/', login_page, name='login'),
+    # path('logout/', logut_page, name='logout'),
+    # path('', schema_view.with_ui('swagger',
+    #                              cache_timeout=0), name='schema-swagger-ui'),
+    # path('redoc/', schema_view.with_ui('redoc',
+    #                                    cache_timeout=0), name='schema-redoc')
 ]
+
+
+urlpatterns += staticfiles_urlpatterns()

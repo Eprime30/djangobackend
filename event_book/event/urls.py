@@ -1,15 +1,14 @@
 from django.urls import path
-from .views import EventCreate
+# EventsBookedByUser
+from .views import EventCreate, BookingView, EventView, BookedEventsView, EventsBookedByUser
+from . import views
 
 app_name = 'event'
 urlpatterns = [
-    # path('', views.EventList.as_view(), name='event-list'),
-    # path('events/<int:pk>/', views.EventDetail.as_view(), name='event-detail'),
-    path('event-create/', EventCreate.as_view(), name='event-create'),
-    # path('events/<int:pk>/delete', views.EventDelete.as_view(), name='event-delete'),
-    # path('events/<int:pk>/update', views.EventUpdate.as_view(), name='event-update'),
-    # path('events/<event_id>/attend/', views.attend_event, name='attend_event'),
-    # path('events/<event_id>/not_attend/',
-    #      views.not_attend_event, name='not_attend_event'),
 
+    path('event-create/', EventCreate.as_view(), name='event-create'),
+    path('event-book/', BookingView.as_view(), name='event-booking'),
+    path('view-events/', EventView.as_view(), name='event-list'),
+    path('view-bookings/', BookedEventsView.as_view(), name='event-bookings'),
+    path('userevents/<pk>/', views.EventsBookedByUser.as_view()),
 ]

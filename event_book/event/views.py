@@ -1,18 +1,20 @@
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
+from rest_framework.views import APIView
 from django.contrib.auth.mixins import LoginRequiredMixin
-# from .models import Event
-# from django.contrib.messages.views import SuccessMessageMixin
-from django.views import View
-from .serializers import EventSerializer, CategorySerializer
+
+from .serializers import EventSerializer, BookingSerializer
 from rest_framework.response import Response
-from .models import Event
+from .models import Event, Booking
+from user_acc.models import Account
+from django.http import HttpResponse, Http404
 
 # Create your views here.
 
 
 # class EventCreate(LoginRequiredMixin, generic.CreateView):
 class EventCreate(generics.GenericAPIView):
+
     serializer_class = EventSerializer
 
     def post(self, request):
@@ -21,21 +23,44 @@ class EventCreate(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         event_data = serializer.data
-        event = Event.objects.get(event_data)
+        event = Event.objects.get(topic=event_data['topic'])
 
         return Response(event_data, status=status.HTTP_201_CREATED)
 
-    # model = Event
-    # template_name = 'events/create_form.html'
-    # fields = ('category', 'name', 'details', 'venue', 'time', 'date')
-    # context_object_name = 'event'
-    # success_message = "%(name)s was created successfully"
 
-    class Category(generics.GenericAPIView):
-        serializer_class = CategorySerializer
+class BookingView(generics.ListCreateAPIView):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
 
-        def post(self, request):
-            serializer = self.serializer_class(data=request.data)
+    def post(self, request):
+        book = request.data
+        serializer = self.serializer_class(data=book)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        book_data = serializer.data
+        # book = Booking.objects.get(event=book_data['event'])
 
-            serializer.is_valid(raise_exception=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(book_data, status=status.HTTP_201_CREATED)
+
+
+class EventView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+
+class BookedEventsView(generics.ListAPIView):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+
+class EventsBookedByUser(APIView):
+    def get(self, request, pk, format=None):
+        try:
+            u = Account.objects.get(pk=pk)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        qs = u.booking_set.all().values_list("event", flat=True)
+        qs = Event.objects.filter(pk__in=qs)
+        events = EventSerializer(qs, many=True)
+        return Response(events.data)
