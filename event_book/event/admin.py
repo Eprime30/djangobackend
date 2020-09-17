@@ -4,6 +4,16 @@
 
 # from event.models import Booking, Event
 
+from .models import (
+    Event,
+    Booking,
+
+)
+from django.contrib import admin
+
+admin.site.site_header = 'Event Booking Admin'
+admin.site.site_title = 'The Admin Dashboard'
+admin.site.index_title = 'Welcome to this Portal'
 
 # class BookAdmin(admin.ModelAdmin):
 #     list_display = ('event', 'time', 'user')
@@ -27,15 +37,6 @@
 # admin.site.register(Booking, BookAdmin)
 # admin.site.register(Event, EventAdmin)
 
-
-from django.contrib import admin
-
-
-from .models import (
-    Event,
-    Booking,
-
-)
 
 admin.site.register(Event)
 admin.site.register(Booking)
