@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'user_acc',
     'rest_framework',
     'corsheaders',
-    # 'phonenumber_field',
+    'knox',
     'drf_yasg',
-    'event'
+    'event',
+    # 'phonenumber_field'
 
 ]
 
@@ -94,8 +95,9 @@ DATABASES = {
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'knox.auth.TokenAuthentication',
     ),
 }
 
@@ -136,7 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 CORS_ORIGIN_WHITELIST = [
     "https://localhost:3000"

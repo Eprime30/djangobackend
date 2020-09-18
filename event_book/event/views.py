@@ -12,7 +12,6 @@ from django.http import HttpResponse, Http404
 # Create your views here.
 
 
-# class EventCreate(LoginRequiredMixin, generic.CreateView):
 class EventCreate(generics.GenericAPIView):
 
     serializer_class = EventSerializer
@@ -63,4 +62,12 @@ class EventsBookedByUser(APIView):
         qs = u.booking_set.all().values_list("event", flat=True)
         qs = Event.objects.filter(pk__in=qs)
         events = EventSerializer(qs, many=True)
+        return Response(events.data)
+
+
+class EventAttendees(APIView):
+    def get(self, request, pk):
+        event = Event.objects.get(pk=pk)
+        bookingset = Booking.objects.filter(event=event)
+        events = BookingSerializer(bookingset, many=True)
         return Response(events.data)

@@ -37,7 +37,7 @@ from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('user_acc.urls')),
+    path('', include('user_acc.urls')),
     path('event/', include('event.urls')),
     path('dash/', dashboard, name='dashboard'),
     # path('login/', login_page, name='login'),
@@ -47,6 +47,3 @@ urlpatterns = [
     # path('redoc/', schema_view.with_ui('redoc',
     #                                    cache_timeout=0), name='schema-redoc')
 ]
-
-
-urlpatterns += staticfiles_urlpatterns()

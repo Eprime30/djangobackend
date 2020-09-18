@@ -12,9 +12,12 @@ django-cors-headers = "*"
 drf-yasg = "*"
 djangorestframework-simplejwt = "*"
 faker = "*"
-django-phonenumber-field = "*"
+django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 phonenumbers = "*"
 django-mapbox-location-field = "*"
+django-rest-knox = "*"
+django-coverage-plugin = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.8"

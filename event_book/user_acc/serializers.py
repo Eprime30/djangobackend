@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Account
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
+import re
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -21,6 +22,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         username = attrs.get('username', '')
         password = attrs.get('password', '')
         confirm_password = attrs.get('confirm_password', '')
+        phone = attrs.get('phone', '')
 
         if password != confirm_password:
             raise serializers.ValidationError(
@@ -29,6 +31,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         if not username.isalnum():
             raise serializers.ValidationError(
                 'The username should only contain alphanumeric characters')
+
+        if re.findall('[A-Z, a-z]', phone):
+            raise serializers.ValidationError(
+                'The phone should only contain numeric characters')
+
+        if not re.findall('\d', password):
+            raise serializers.ValidationError(
+                "The password must contain at least 1 digit, 0-9.")
         return attrs
 
     def create(self, validated_data):

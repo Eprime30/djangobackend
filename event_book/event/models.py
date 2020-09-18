@@ -120,8 +120,8 @@ class Booking(models.Model):
         ('Afternoon', 'Afternoon'),
     )
 
-    time = models.CharField(verbose_name='time', max_length=50,
-                            choices=times, default='')
+    time = models.CharField(
+        verbose_name='time', max_length=50, choices=times, default='', unique=True)
 
     def __str__(self):
         return str(self.user) + " For " + str(self.event)

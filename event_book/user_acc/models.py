@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from rest_framework_simplejwt.tokens import RefreshToken
+# from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
@@ -77,9 +78,12 @@ class Account(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         verbose_name='username', max_length=255, unique=True)
 
-    # phone = PhoneNumberField(null=False, blank=False, unique=True)
     phone = models.CharField(
         verbose_name='phone', max_length=10, blank=True)
+    # phone = PhoneNumberField(null=False, blank=False, unique=True)
+    # phone = models.PositiveIntegerField(
+    #     verbose_name='phone', blank=True)
+    # phone = models.IntegerField(max_length=10, null=False, unique=True)
     address = models.TextField(
         verbose_name='address', max_length=200, blank=True)
 
